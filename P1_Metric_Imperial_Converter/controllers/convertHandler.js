@@ -18,15 +18,15 @@ function ConvertHandler() {
     let validDecimal = /^\d+(\.\d+)?$/; //decimal
     let result;
 
-    if (inputText.search("[a-zA-Z]") != -1) {
-      num = inputText.slice(0, inputText.search("[a-zA-Z]"));
+    if (input.search("[a-zA-Z]") != -1) {
+      num = input.slice(0, input.search("[a-zA-Z]")).trim();
     } else {
-      num = inputText.slice(0);
+      num = input.slice(0).trim();
     }
 
-    if (validDecimal.test(result)) {
+    if (validDecimal.test(num)) {
       result = Number(num);
-    } else if (validFraction.test(result)) {
+    } else if (validFraction.test(num)) {
       const nominator = num.slice(0, num.indexOf("/"));
       const denominator = num.slice(num.indexOf("/") + 1);
       result = Number(nominator / denominator);
