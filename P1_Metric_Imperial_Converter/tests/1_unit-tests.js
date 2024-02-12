@@ -90,6 +90,30 @@ suite("Unit Tests", function () {
   });
 
   suite("Function convert(initNum, initUnit)", function () {
+    test("Convert 1 gal to 3.78541 L", () => {
+      assert.approximately(convertHandler.convert("1", "gal"), 3.78541, 0.1);
+    });
+
+    test("Convert 3.78541 L to 1 gal", () => {
+      assert.approximately(convertHandler.convert("3.78541", "L"), 1, 0.1);
+    });
+
+    test("Convert 1 lbs to 0.453592 kg", () => {
+      assert.approximately(convertHandler.convert("1", "lbs"), 0.453592, 0.1);
+    });
+
+    test("Convert 0.453592 kg to 1 lbs", () => {
+      assert.approximately(convertHandler.convert("0.453592", "kg"), 1, 0.1);
+    });
+
+    test("Convert 1 mi to 1.60934 km", () => {
+      assert.approximately(convertHandler.convert("1", "mi"), 1.60934, 0.1);
+    });
+
+    test("Convert 1.60934 km to 1 mi", () => {
+      assert.approximately(convertHandler.convert("1.60934", "km"), 1, 0.1);
+    });
+
     test("Convert gal to L", () => {
       assert.approximately(convertHandler.convert("5", "gal"), 18.92705, 0.1);
     });
