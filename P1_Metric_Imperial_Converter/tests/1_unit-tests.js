@@ -91,51 +91,51 @@ suite("Unit Tests", function () {
 
   suite("Function convert(initNum, initUnit)", function () {
     test("Convert 1 gal to 3.78541 L", () => {
-      assert.approximately(convertHandler.convert("1", "gal"), 3.78541, 0.1);
+      assert.approximately(convertHandler.convert(1, "gal"), 3.78541, 0.01);
     });
 
     test("Convert 3.78541 L to 1 gal", () => {
-      assert.approximately(convertHandler.convert("3.78541", "L"), 1, 0.1);
+      assert.approximately(convertHandler.convert(3.78541, "L"), 1, 0.01);
     });
 
     test("Convert 1 lbs to 0.453592 kg", () => {
-      assert.approximately(convertHandler.convert("1", "lbs"), 0.453592, 0.1);
+      assert.approximately(convertHandler.convert(1, "lbs"), 0.453592, 0.01);
     });
 
     test("Convert 0.453592 kg to 1 lbs", () => {
-      assert.approximately(convertHandler.convert("0.453592", "kg"), 1, 0.1);
+      assert.approximately(convertHandler.convert(0.453592, "kg"), 1, 0.01);
     });
 
     test("Convert 1 mi to 1.60934 km", () => {
-      assert.approximately(convertHandler.convert("1", "mi"), 1.60934, 0.1);
+      assert.approximately(convertHandler.convert(1, "mi"), 1.60934, 0.1);
     });
 
     test("Convert 1.60934 km to 1 mi", () => {
-      assert.approximately(convertHandler.convert("1.60934", "km"), 1, 0.1);
+      assert.approximately(convertHandler.convert(1.60934, "km"), 1, 0.1);
     });
 
     test("Convert gal to L", () => {
-      assert.approximately(convertHandler.convert("5", "gal"), 18.92705, 0.1);
+      assert.approximately(convertHandler.convert(5, "gal"), 18.92705, 0.1);
     });
 
     test("Convert L to gal", () => {
-      assert.approximately(convertHandler.convert("5", "L"), 1.32086, 0.1);
+      assert.approximately(convertHandler.convert(5, "L"), 1.32086, 0.1);
     });
 
     test("Convert mi to km", () => {
-      assert.approximately(convertHandler.convert("5", "mi"), 8.0467, 0.1);
+      assert.approximately(convertHandler.convert(5, "mi"), 8.0467, 0.1);
     });
 
     test("Convert km to mi", () => {
-      assert.approximately(convertHandler.convert("5", "km"), 3.10686, 0.1);
+      assert.approximately(convertHandler.convert(5, "km"), 3.10686, 0.1);
     });
 
     test("Convert lbs to kg", () => {
-      assert.approximately(convertHandler.convert("5", "lbs"), 2.26796, 0.1);
+      assert.approximately(convertHandler.convert(5, "lbs"), 2.26796, 0.1);
     });
 
     test("Convert kg to lbs", () => {
-      assert.approximately(convertHandler.convert("5", "kg"), 11.02312, 0.1);
+      assert.approximately(convertHandler.convert(5, "kg"), 11.02312, 0.1);
     });
   });
 });
