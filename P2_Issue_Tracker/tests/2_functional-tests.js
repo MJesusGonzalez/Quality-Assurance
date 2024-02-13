@@ -2,6 +2,7 @@ const chaiHttp = require("chai-http");
 const chai = require("chai");
 const assert = chai.assert;
 const server = require("../server");
+const { expect } = require("chai");
 const Issue = require("../models/issue");
 const { ObjectId } = require("mongodb");
 
@@ -26,9 +27,9 @@ suite("Functional Tests", function () {
           assert.equal(res.status, 200);
           assert.equal(res.body.issue_title, "Error in data");
           assert.equal(res.body.issue_text, "Data has an error");
-          assert.equal(res.created_by, "Jesus");
-          assert.equal(res.assigned_to, "Mateo");
-          assert.equal(res.status_text, "In QA");
+          assert.equal(res.body.created_by, "Jesus");
+          assert.equal(res.body.assigned_to, "Mateo");
+          assert.equal(res.body.status_text, "In QA");
           done();
         });
     });
@@ -48,9 +49,9 @@ suite("Functional Tests", function () {
           assert.equal(res.status, 200);
           assert.equal(res.body.issue_title, "Error in data");
           assert.equal(res.body.issue_text, "Data has an error");
-          assert.equal(res.created_by, "Jesus");
-          assert.equal(res.assigned_to, "");
-          assert.equal(res.status_text, "");
+          assert.equal(res.body.created_by, "Jesus");
+          assert.equal(res.body.assigned_to, "");
+          assert.equal(res.body.status_text, "");
           done();
         });
     });
