@@ -134,10 +134,75 @@ suite("Functional Tests", function () {
 
   suite("Test PUT", () => {
     // #1
+    test("One field on an issue", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/apitest")
+        .send({
+          _id: "65cad5c5101563a7e25f77bf",
+          issue_text: "Error1",
+        })
+        .end((err, res) => {
+          assert.equal(res.body.result, "successfully updated");
+          assert.equal(res.body._id, "65cad5c5101563a7e25f77bf");
+          done();
+        });
+    });
+
     // #2
+    test("Multiple fields on an issue", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/apitest")
+        .send({
+          _id: "65cad5c5101563a7e25f77bf",
+          created_by: "Jesus",
+          issue_text: "Error",
+        })
+        .end((err, res) => {
+          assert.equal(res.body.result, "successfully updated");
+          assert.equal(res.body._id, "65cad5c5101563a7e25f77bf");
+          done();
+        });
+    });
+
     // #3
+    test("Issue with missing id", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/apitest")
+        .send({})
+        .end((err, res) => {
+          assert.equal(res.body.error, "missing _id");
+          done();
+        });
+    });
+
     // #4
+    test("Issue with no fields to update", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/apitest")
+        .send({ _id: "65cad5c5101563a7e25f77bf" })
+        .end((err, res) => {
+          assert.equal(res.body.error, "no update field(s) sent");
+          assert.equal(res.body._id, "65cad5c5101563a7e25f77bf");
+          done();
+        });
+    });
+
     // #5
+    test("Issue with an invalid id", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/apitest")
+        .send({ _id: "65cad5c5101563a7e25f7761", issue_text: "Jesus" })
+        .end((err, res) => {
+          assert.equal(res.body.error, "could not update");
+          assert.equal(res.body._id, "65cad5c5101563a7e25f7761");
+          done();
+        });
+    });
   });
 
   suite("Test DELETE", () => {

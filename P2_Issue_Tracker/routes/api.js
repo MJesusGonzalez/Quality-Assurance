@@ -82,5 +82,38 @@ module.exports = function (app) {
           }
         })
         .catch((err) => console.log(err));
+    })
+
+    .put(async function (req, res) {
+      let project = req.params.project;
+      let obj = Object.assign(req.body);
+      let flag = false;
+
+      if (Object.keys(obj).length === 0) {
+        flag = true;
+        return res.json({ error: "missing _id" });
+      } else if (Object.keys(obj).length === 1 && obj._id) {
+        flag = true;
+        return res.json({ error: "no update field(s) sent", _id: obj._id });
+      } else if (Object.keys(obj).length >= 2 && obj._id) {
+        flag = true;
+        obj.updated_on = new Date();
+
+        issueModel
+          .findByIdAndUpdate(obj._id, obj)
+          .exec()
+          .then((data) => {
+            if (data) {
+              return res.json({ result: "successfully updated", _id: obj._id });
+            } else {
+              return res.json({ error: "could not update", _id: obj._id });
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+
+      if (!flag) {
+        return res.json({ error: "could not update", _id: obj._id });
+      }
     });
 };
