@@ -120,17 +120,18 @@ module.exports = function (app) {
     .delete(async function (req, res) {
       let project = req.params.project;
       let obj = Object.assign(req.body);
+      //console.log(obj)
       if (!obj._id) {
         return res.json({ error: "missing _id" });
       } else {
         issueModel
-          .findByIdAndDelete(obj._id, obj)
+          .findByIdAndDelete(obj._id)
           .exec()
           .then((data) => {
             if (data) {
               return res.json({ result: "successfully deleted", _id: obj._id });
             } else {
-              return res.json({ result: "could not delete", _id: obj._id });
+              return res.json({ error: "could not delete", _id: obj._id });
             }
           })
           .catch((err) => console.log(err));

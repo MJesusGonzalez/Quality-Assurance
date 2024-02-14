@@ -218,7 +218,9 @@ suite("Functional Tests", function () {
         .delete("/api/issues/apitest")
         .send({ _id: "65cad6a7e92553a805ec52c7" })
         .end((err, res) => {
-          assert.equal(res.body.result, "successfully deleted");
+          // if the id exist the message must be successfully deleted
+          // in this case the id is already deleted
+          assert.equal(res.body.error, "could not delete");
           assert.equal(res.body._id, "65cad6a7e92553a805ec52c7");
           done();
         });
@@ -233,7 +235,7 @@ suite("Functional Tests", function () {
           _id: "65cad5c5101563a7e25f7761",
         })
         .end((err, res) => {
-          assert.equal(res.body.result, "could not delete");
+          assert.equal(res.body.error, "could not delete");
           assert.equal(res.body._id, "65cad5c5101563a7e25f7761");
           done();
         });
