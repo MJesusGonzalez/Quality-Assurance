@@ -52,5 +52,35 @@ module.exports = function (app) {
       } catch (err) {
         console.log(err);
       }
+    })
+
+    .get(async function (req, res) {
+      let project = req.params.project;
+      let obj = Object.assign(req.query);
+      obj["project"] = project;
+
+      issueModel
+        .find(obj)
+        .exec()
+        .then((data) => {
+          if (data) {
+            let obj = [];
+            data.forEach((data) => {
+              obj.push({
+                _id: data._id,
+                assigned_to: data.assigned_to,
+                status_text: data.status_text,
+                issue_title: data.issue_title,
+                issue_text: data.issue_text,
+                created_by: data.created_by,
+                created_on: data.created_on,
+                updated_on: data.updated_on,
+                open: data.open,
+              });
+            });
+            return res.json(obj);
+          }
+        })
+        .catch((err) => console.log(err));
     });
 };
