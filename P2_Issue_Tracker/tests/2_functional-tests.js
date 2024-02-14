@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 suite("Functional Tests", function () {
   suite("Test POST", () => {
     // #1
-    test("Issue with every field", (done) => {
+    test("POST Issue with every field", (done) => {
       chai
         .request(server)
         .keepOpen()
@@ -35,7 +35,7 @@ suite("Functional Tests", function () {
     });
 
     // #2
-    test("Issue with only required fields", (done) => {
+    test("POST Issue with only required fields", (done) => {
       chai
         .request(server)
         .keepOpen()
@@ -57,7 +57,7 @@ suite("Functional Tests", function () {
     });
 
     // #3
-    test("Issue with missing required fields", (done) => {
+    test("POST Issue with missing required fields", (done) => {
       chai
         .request(server)
         .keepOpen()
@@ -75,7 +75,7 @@ suite("Functional Tests", function () {
 
   suite("Test GET", () => {
     // #1
-    test("Issues on a project", (done) => {
+    test("GET Issues on a project", (done) => {
       chai
         .request(server)
         .keepOpen()
@@ -97,7 +97,7 @@ suite("Functional Tests", function () {
     });
 
     // #2
-    test("Issues on a project with one filter", (done) => {
+    test("GET Issues on a project with one filter", (done) => {
       chai
         .request(server)
         .keepOpen()
@@ -114,7 +114,7 @@ suite("Functional Tests", function () {
     });
 
     // #3
-    test("Issues on a project with multiple filters", (done) => {
+    test("GET Issues on a project with multiple filters", (done) => {
       chai
         .request(server)
         .keepOpen()
@@ -134,42 +134,45 @@ suite("Functional Tests", function () {
 
   suite("Test PUT", () => {
     // #1
-    test("One field on an issue", (done) => {
+    test("PUT One field on an issue", (done) => {
       chai
         .request(server)
+        .keepOpen()
         .put("/api/issues/apitest")
         .send({
-          _id: "65cad5c5101563a7e25f77bf",
+          _id: "65cad6a2e92553a805ec52c3",
           issue_text: "Error1",
         })
         .end((err, res) => {
           assert.equal(res.body.result, "successfully updated");
-          assert.equal(res.body._id, "65cad5c5101563a7e25f77bf");
+          assert.equal(res.body._id, "65cad6a2e92553a805ec52c3");
           done();
         });
     });
 
     // #2
-    test("Multiple fields on an issue", (done) => {
+    test("PUT Multiple fields on an issue", (done) => {
       chai
         .request(server)
+        .keepOpen()
         .put("/api/issues/apitest")
         .send({
-          _id: "65cad5c5101563a7e25f77bf",
+          _id: "65cad6a2e92553a805ec52c3",
           created_by: "Jesus",
           issue_text: "Error",
         })
         .end((err, res) => {
           assert.equal(res.body.result, "successfully updated");
-          assert.equal(res.body._id, "65cad5c5101563a7e25f77bf");
+          assert.equal(res.body._id, "65cad6a2e92553a805ec52c3");
           done();
         });
     });
 
     // #3
-    test("Issue with missing id", (done) => {
+    test("PUT Issue with missing id", (done) => {
       chai
         .request(server)
+        .keepOpen()
         .put("/api/issues/apitest")
         .send({})
         .end((err, res) => {
@@ -179,9 +182,10 @@ suite("Functional Tests", function () {
     });
 
     // #4
-    test("Issue with no fields to update", (done) => {
+    test("PUT Issue with no fields to update", (done) => {
       chai
         .request(server)
+        .keepOpen()
         .put("/api/issues/apitest")
         .send({ _id: "65cad5c5101563a7e25f77bf" })
         .end((err, res) => {
@@ -192,9 +196,10 @@ suite("Functional Tests", function () {
     });
 
     // #5
-    test("Issue with an invalid id", (done) => {
+    test("PUT Issue with an invalid id", (done) => {
       chai
         .request(server)
+        .keepOpen()
         .put("/api/issues/apitest")
         .send({ _id: "65cad5c5101563a7e25f7761", issue_text: "Jesus" })
         .end((err, res) => {
@@ -207,7 +212,43 @@ suite("Functional Tests", function () {
 
   suite("Test DELETE", () => {
     // #1
+    test("DELETE An issue", (done) => {
+      chai
+        .request(server)
+        .delete("/api/issues/apitest")
+        .send({ _id: "65cad6a7e92553a805ec52c7" })
+        .end((err, res) => {
+          assert.equal(res.body.result, "successfully deleted");
+          assert.equal(res.body._id, "65cad6a7e92553a805ec52c7");
+          done();
+        });
+    });
     // #2
+    test("DELETE An issue with an invalid id", (done) => {
+      chai
+        .request(server)
+        .keepOpen()
+        .delete("/api/issues/apitest")
+        .send({
+          _id: "65cad5c5101563a7e25f7761",
+        })
+        .end((err, res) => {
+          assert.equal(res.body.result, "could not delete");
+          assert.equal(res.body._id, "65cad5c5101563a7e25f7761");
+          done();
+        });
+    });
     // #3
+    test("DELETE An issue with missing id", (done) => {
+      chai
+        .request(server)
+        .keepOpen()
+        .delete("/api/issues/apitest")
+        .send({})
+        .end((err, res) => {
+          assert.equal(res.body.error, "missing _id");
+          done();
+        });
+    });
   });
 });
