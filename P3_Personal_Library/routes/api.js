@@ -9,8 +9,9 @@
 "use strict";
 
 const mongoose = require("mongoose");
+
 module.exports = function (app) {
-  mongoose.connect(process.env.DB, {
+  mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
@@ -62,6 +63,14 @@ module.exports = function (app) {
     .get(function (req, res) {
       let bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+      libraryModel
+        .findById(bookid)
+        .exec()
+        .then((data) => {
+          if (data) return res.json(data);
+          else return res.send("no book exists");
+        })
+        .catch((err) => console.log(err));
     })
 
     .post(function (req, res) {

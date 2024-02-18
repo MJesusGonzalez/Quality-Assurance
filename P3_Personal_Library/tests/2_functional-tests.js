@@ -83,17 +83,60 @@ suite("Functional Tests", function () {
 
     suite("GET /api/books => array of books", function () {
       test("Test GET /api/books", function (done) {
-        //done();
+        chai
+          .request(server)
+          .get("/api/books")
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.property(res.body[0], "comments");
+            assert.property(res.body[0], "commentcount");
+            assert.property(res.body[0], "_id");
+            assert.property(res.body[0], "title");
+            assert.deepEqual(res.body[0], {
+              comments: res.body[0].comments,
+              commentcount: res.body[0].commentcount,
+              _id: res.body[0]._id,
+              title: res.body[0].title,
+              __v: res.body[0].__v,
+            });
+            done();
+          });
       });
     });
 
     suite("GET /api/books/[id] => book object with [id]", function () {
       test("Test GET /api/books/[id] with id not in db", function (done) {
-        //done();
+        chai
+          .request(server)
+          .get("/api/books/65d227240a44f70187048c9b")
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, "no book exists");
+            done();
+          });
       });
 
-      test("Test GET /api/books/[id] with valid id in db", function (done) {
-        //done();
+      test("Test GET /api/books/[id] with valid id in db", async function () {
+        let foundID = await libraryModel.find({}).exec();
+        chai
+          .request(server)
+          .get(`/api/books/${foundID[0]._id}`)
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.isObject(res.body);
+            assert.property(res.body, "comments");
+            assert.property(res.body, "commentcount");
+            assert.property(res.body, "_id");
+            assert.property(res.body, "title");
+            assert.deepEqual(res.body, {
+              comments: res.body.comments,
+              commentcount: res.body.commentcount,
+              _id: res.body._id,
+              title: res.body.title,
+              __v: res.body.__v,
+            });
+          });
       });
     });
 
