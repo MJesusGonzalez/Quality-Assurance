@@ -56,6 +56,17 @@ module.exports = function (app) {
 
     .delete(function (req, res) {
       //if successful response will be 'complete delete successful'
+      libraryModel
+        .deleteMany({})
+        .exec()
+        .then((data) => {
+          if (data.deletedCount === 0) {
+            return res.send("no book exists");
+          } else {
+            return res.send("complete delete successful");
+          }
+        })
+        .catch((err) => console.log(err));
     });
 
   app
@@ -77,10 +88,43 @@ module.exports = function (app) {
       let bookid = req.params.id;
       let comment = req.body.comment;
       //json res format same as .get
+
+      if (!bookid) {
+        return res.send("missing required field title");
+      } else if (bookid && !comment) {
+        return res.send("missing required field comment");
+      } else if (bookid && comment) {
+        libraryModel
+          .findById(bookid)
+          .exec()
+          .then((data) => {
+            if (data) {
+              data.comments.push(comment);
+              data.commentcount = ++data.commentcount;
+
+              data.save((err, info) => {
+                if (err) return console.log(err);
+                return res.json(info);
+              });
+            } else res.send("no book exists");
+          })
+          .catch((err) => console.log(err));
+      }
     })
 
     .delete(function (req, res) {
       let bookid = req.params.id;
       //if successful response will be 'delete successful'
+      libraryModel
+        .findByIdAndDelete(bookid)
+        .exec()
+        .then((data) => {
+          if (data) {
+            return res.send("delete successful");
+          } else {
+            return res.send("no book exists");
+          }
+        })
+        .catch((err) => console.log(err));
     });
 };

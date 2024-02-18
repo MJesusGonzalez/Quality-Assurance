@@ -143,27 +143,78 @@ suite("Functional Tests", function () {
     suite(
       "POST /api/books/[id] => add comment/expect book object with id",
       function () {
-        test("Test POST /api/books/[id] with comment", function (done) {
-          //done();
+        test("Test POST /api/books/[id] with comment", async function () {
+          let foundID = await libraryModel.find({}).exec();
+
+          chai
+            .request(server)
+            .post(`/api/books/${foundID[0]._id}`)
+            .send({ comment: "comm" })
+            .end((err, res) => {
+              assert.equal(res.status, 200);
+              assert.isArray(res.body.comments);
+              assert.property(res.body, "comments");
+              assert.property(res.body, "commentcount");
+              assert.property(res.body, "_id");
+              assert.property(res.body, "title");
+              assert.deepEqual(res.body, {
+                comments: res.body.comments,
+                commentcount: res.body.commentcount,
+                _id: res.body._id,
+                title: res.body.title,
+                __v: res.body.__v,
+              });
+            });
         });
 
         test("Test POST /api/books/[id] without comment field", function (done) {
-          //done();
+          chai
+            .request(server)
+            .post("/api/books/65d227240a44f70187048c8b")
+            .end((err, res) => {
+              assert.equal(res.status, 200);
+              assert.deepEqual(res.text, "missing required field comment");
+              done();
+            });
         });
 
         test("Test POST /api/books/[id] with comment, id not in db", function (done) {
-          //done();
+          chai
+            .request(server)
+            .post("/api/books/65d227240a44f70187048c9b")
+            .send({ comment: "comment" })
+            .end((err, res) => {
+              assert.equal(res.status, 200);
+              assert.deepEqual(res.text, "no book exists");
+              done();
+            });
         });
       }
     );
 
     suite("DELETE /api/books/[id] => delete book object id", function () {
-      test("Test DELETE /api/books/[id] with valid id in db", function (done) {
-        //done();
+      test("Test DELETE /api/books/[id] with valid id in db", async function () {
+        //const foundDoc = await libraryModel.findOne({ title: "to be deleted" });
+
+        chai
+          .request(server)
+          //.delete(`/api/books/${foundDoc._id}`)
+          .delete(`/api*books/65d25a41c081f503caed7c3e`)
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.text, "delete successful");
+          });
       });
 
       test("Test DELETE /api/books/[id] with  id not in db", function (done) {
-        //done();
+        chai
+          .request(server)
+          .delete("/api/books/65d227240a44f70187048c9b")
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.text, "no book exists");
+            done();
+          });
       });
     });
   });
