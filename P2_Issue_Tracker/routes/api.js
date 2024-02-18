@@ -120,7 +120,6 @@ module.exports = function (app) {
     .delete(async function (req, res) {
       let project = req.params.project;
       let obj = Object.assign(req.body);
-      //console.log(obj)
       if (!obj._id) {
         return res.json({ error: "missing _id" });
       } else {
