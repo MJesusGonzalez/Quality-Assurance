@@ -10,7 +10,7 @@ const stringComplete =
 chai.use(chaiHttp);
 
 suite("Functional Tests", () => {
-  test("Test POST to /api/solve", () => {
+  suite("Test POST to /api/solve", () => {
     // TEST 1
     test("test POST with valid puzzle string", (done) => {
       chai
@@ -94,7 +94,7 @@ suite("Functional Tests", () => {
     });
   });
 
-  test("Test POST to /api/check", () => {
+  suite("Test POST to /api/check", () => {
     // TEST 1
     test("check a puzzle placement with all fields", (done) => {
       chai
